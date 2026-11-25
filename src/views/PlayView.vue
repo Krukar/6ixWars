@@ -1,9 +1,17 @@
+<script setup lang="ts">
+import { START } from '@/game/data'
+import { useGameStore } from '@/stores/game'
+
+const store = useGameStore()
+store.start()
+</script>
+
 <template>
     <main>
         <section>
-            <div>game title</div>
+            <div>6ix Wars</div>
 
-            <div>day</div>
+            <div>Day {{ store.game.day }} / {{ START.days }}</div>
 
             <div>location</div>
 

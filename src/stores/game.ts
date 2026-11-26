@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
+import { LOCATIONS } from '@Game/data'
 import { newGame } from '@Game/engine'
 
 import type { GameState } from '@Game/types'
@@ -12,9 +13,11 @@ function randomSeed(): number {
 export const useGameStore = defineStore('game', () => {
     const game = ref<GameState>(newGame(randomSeed()))
 
+    const location_name = computed(() => LOCATIONS.find((location) => location.id === game.value.location)?.name ?? game.value.location)
+
     function start() {
         game.value = newGame(randomSeed())
     }
 
-    return { game, start }
+    return { game, location_name, start }
 })

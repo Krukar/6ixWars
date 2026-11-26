@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { START } from '@/game/data'
-import { useGameStore } from '@/stores/game'
+import { START } from '@Game/data'
+import { useGameStore } from '@Stores/game'
+
+import FullscreenButton from '@Components/FullscreenButton.vue'
 
 const store = useGameStore()
 store.start()
@@ -13,9 +15,9 @@ store.start()
 
             <div>Day {{ store.game.day }} / {{ START.days }}</div>
 
-            <div>location</div>
+            <div>{{ store.location_name }}</div>
 
-            <div>fullscreen</div>
+            <div><FullscreenButton /></div>
         </section>
 
         <section>

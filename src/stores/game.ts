@@ -1,23 +1,28 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
+import { nanoid } from 'nanoid';
+
 import { LOCATIONS } from '@Game/data';
-import { new_game } from '@Game/engine';
+import { carried, new_game } from '@Game/engine';
 
 import type { GameState } from '@Game/types';
 
-function randomSeed(): number {
-    return Math.floor(Math.random() * 0x100000000);
-}
+/** Returns a random 6-character seed for a new game. */
+const random_seed = (): string => {
+    return nanoid(6);
+};
 
 export const useGameStore = defineStore('game', () => {
-    const game = ref<GameState>(new_game(randomSeed()));
+    const game = ref<GameState>(new_game(random_seed()));
+
+    const inventory_count = computed(() => carried(game.value));
 
     const location_name = computed(() => LOCATIONS.find((location) => location.id === game.value.location)?.name ?? game.value.location);
 
-    function start() {
-        game.value = new_game(randomSeed());
-    }
+    const start = () => {
+        game.value = new_game(random_seed());
+    };
 
-    return { game, location_name, start };
+    return { game, inventory_count, location_name, start };
 });

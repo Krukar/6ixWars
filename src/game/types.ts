@@ -15,6 +15,7 @@ export interface Location {
 }
 
 export interface GameState {
+    seed: string;
     status: 'playing' | 'gameOver';
     day: number;
     location: LocationId;

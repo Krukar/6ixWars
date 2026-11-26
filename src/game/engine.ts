@@ -8,30 +8,46 @@ const SELL_CHANCE = 0.75;
     Private
 ==================== */
 
+/** Hashes a seed string into a 32-bit integer (FNV-1a) to start the PRNG. */
+const hash_seed = (seed: string): number => {
+    let hash = 0x811c9dc5;
+
+    for (const char of seed) {
+        hash = Math.imul(hash ^ char.charCodeAt(0), 0x01000193);
+    }
+
+    return hash >>> 0;
+};
+
 /** Returns the id of the location flagged as home, throwing if none is defined. */
 const home_id = (): LocationId => {
     const home = LOCATIONS.find((location) => location.isHome);
+
     if (!home) throw new Error('LOCATIONS needs one location with isHome: true');
+
     return home.id;
 };
 
 /** Returns true if the quantity is a positive whole number. */
-const is_valid_quantity = (quantity: number): boolean => {
-    return Number.isInteger(quantity) && quantity > 0;
-};
+const is_valid_quantity = (quantity: number): boolean => Number.isInteger(quantity) && quantity > 0;
 
 /** Rolls a new market: each item has a SELL_CHANCE of being for sale, at a random price within its min/max range. */
 const roll_prices = (rng_state: number): { prices: Partial<Record<ItemId, number>>; rng_state: number } => {
     const prices: Partial<Record<ItemId, number>> = {};
+
     let state = rng_state;
+
     for (const item of ITEMS) {
         const sold = next_random(state);
         const price = next_random(sold.state);
+
         state = price.state;
+
         if (sold.value < SELL_CHANCE) {
             prices[item.id] = item.minPrice + Math.floor(price.value * (item.maxPrice - item.minPrice + 1));
         }
     }
+
     return { prices, rng_state: state };
 };
 
@@ -42,8 +58,11 @@ const roll_prices = (rng_state: number): { prices: Partial<Record<ItemId, number
 /** Buys a quantity of an item at the current price if it's for sale and the player has the cash and space. */
 export const buy = (state: GameState, item: ItemId, quantity: number): GameState => {
     const price = state.prices[item];
+
     if (state.status !== 'playing' || price === undefined || !is_valid_quantity(quantity)) return state;
+
     if (price * quantity > state.cash || carried(state) + quantity > state.capacity) return state;
+
     return {
         ...state,
         cash: state.cash - price * quantity,
@@ -52,14 +71,14 @@ export const buy = (state: GameState, item: ItemId, quantity: number): GameState
 };
 
 /** Returns the total number of units currently in the player's inventory. */
-export const carried = (state: GameState): number => {
-    return Object.values(state.inventory).reduce((total, quantity) => total + quantity, 0);
-};
+export const carried = (state: GameState): number => Object.values(state.inventory).reduce((total, quantity) => total + quantity, 0);
 
-/** Creates a fresh game state at the home location with starting cash, debt and an initial market. */
-export const new_game = (seed: number): GameState => {
-    const market = roll_prices(seed);
+/** Creates a fresh game from a seed string, at the home location with starting cash, debt and an initial market. */
+export const new_game = (seed: string): GameState => {
+    const market = roll_prices(hash_seed(seed));
+
     return {
+        seed,
         status: 'playing',
         day: 1,
         location: home_id(),
@@ -77,16 +96,21 @@ export const new_game = (seed: number): GameState => {
 /** Seeded PRNG (mulberry32): returns a value in [0, 1) and the next state. */
 export const next_random = (state: number): { value: number; state: number } => {
     const next = (state + 0x6d2b79f5) | 0;
+
     let t = Math.imul(next ^ (next >>> 15), next | 1);
     t = (t + Math.imul(t ^ (t >>> 7), t | 61)) ^ t;
+
     return { value: ((t ^ (t >>> 14)) >>> 0) / 4294967296, state: next };
 };
 
 /** Sells a quantity of an item at the current price if it's for sale and the player has enough. */
 export const sell = (state: GameState, item: ItemId, quantity: number): GameState => {
     const price = state.prices[item];
+
     if (state.status !== 'playing' || price === undefined || !is_valid_quantity(quantity)) return state;
+
     if (quantity > state.inventory[item]) return state;
+
     return {
         ...state,
         cash: state.cash + price * quantity,
@@ -97,8 +121,11 @@ export const sell = (state: GameState, item: ItemId, quantity: number): GameStat
 /** Moves to a new location: advances the day, compounds debt interest and rolls a new market, or ends the game on the last day. */
 export const travel = (state: GameState, to: LocationId): GameState => {
     if (state.status !== 'playing' || to === state.location) return state;
+
     if (state.day >= START.days) return { ...state, status: 'gameOver' };
+
     const market = roll_prices(state.rngState);
+
     return {
         ...state,
         day: state.day + 1,

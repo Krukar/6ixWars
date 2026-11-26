@@ -11,8 +11,8 @@ store.start();
 </script>
 
 <template>
-    <main className="w-2/3 mx-auto space-y-10 my-10">
-        <section className="flex justify-between">
+    <main class="w-2/3 mx-auto space-y-10 my-10">
+        <section class="flex justify-between">
             <div>6ix Wars</div>
 
             <div>Day {{ store.game.day }} / {{ START.days }}</div>
@@ -22,7 +22,7 @@ store.start();
             <div><FullscreenButton /></div>
         </section>
 
-        <section className="flex justify-between">
+        <section class="flex justify-between">
             <div>Cash {{ format_money(store.game.cash) }}</div>
 
             <div>Bank {{ format_money(store.game.bank) }}</div>
@@ -32,19 +32,19 @@ store.start();
             <div>inventory</div>
         </section>
 
-        <section className="flex justify-between">
+        <section class="flex justify-between">
             <div>inventory bar</div>
         </section>
 
-        <section className="flex justify-between">
+        <section class="flex justify-between">
             <div>market</div>
         </section>
 
-        <section className="flex justify-between">
+        <section class="flex justify-between">
             <div>travel to</div>
         </section>
 
-        <section className="flex justify-between">
+        <section class="flex justify-between">
             <div>bank</div>
 
             <div>loan shark</div>

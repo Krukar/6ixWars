@@ -2,6 +2,8 @@
 import { START } from '@Game/data'
 import { useGameStore } from '@Stores/game'
 
+import { format_money } from '@Game/format'
+
 import FullscreenButton from '@Components/FullscreenButton.vue'
 
 const store = useGameStore()
@@ -21,11 +23,11 @@ store.start()
         </section>
 
         <section>
-            <div>cash</div>
+            <div>Cash {{ format_money(store.game.cash) }}</div>
 
-            <div>bank</div>
+            <div>Bank {{ format_money(store.game.bank) }}</div>
 
-            <div>debt</div>
+            <div>Debt {{ format_money(store.game.debt) }}</div>
 
             <div>inventory</div>
         </section>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-import IconMaximize from '@Components/SVGs/Maximize.vue'
-import IconMinimize from '@Components/SVGs/Minimize.vue'
+import IconMaximize from '@Components/SVGs/IconMaximize.vue'
+import IconMinimize from '@Components/SVGs/IconMinimize.vue'
 
 const can_fullscreen = document.fullscreenEnabled
 const is_fullscreen = ref(false)

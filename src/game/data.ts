@@ -1,4 +1,4 @@
-import type { Item, Location } from './types'
+import type { Item, Location } from './types';
 
 export const ITEMS: Item[] = [
     { id: 'cocaine', name: 'Cocaine', minPrice: 15000, maxPrice: 30000 },
@@ -7,7 +7,7 @@ export const ITEMS: Item[] = [
     { id: 'weed', name: 'Weed', minPrice: 300, maxPrice: 900 },
     { id: 'mdma', name: 'MDMA', minPrice: 70, maxPrice: 250 },
     { id: 'shrooms', name: 'Shrooms', minPrice: 10, maxPrice: 60 },
-]
+];
 
 export const LOCATIONS: Location[] = [
     { id: 'oldToronto', name: 'Old Toronto', isHome: true },
@@ -16,7 +16,7 @@ export const LOCATIONS: Location[] = [
     { id: 'northYork', name: 'North York', isHome: false },
     { id: 'york', name: 'York', isHome: false },
     { id: 'eastYork', name: 'East York', isHome: false },
-]
+];
 
 export const START = {
     days: 30,
@@ -24,4 +24,4 @@ export const START = {
     debt: 5500,
     capacity: 100,
     dailyInterest: 0.1,
-} as const
+} as const;

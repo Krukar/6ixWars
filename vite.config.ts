@@ -1,18 +1,21 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueDevTools from 'vite-plugin-vue-devtools';
+
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [vue(), vueDevTools()],
+    plugins: [vue(), vueDevTools(), tailwindcss()],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),
             '@Components': fileURLToPath(new URL('./src/components', import.meta.url)),
             '@Game': fileURLToPath(new URL('./src/game', import.meta.url)),
             '@Stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
+            '@Styles': fileURLToPath(new URL('./src/styles', import.meta.url)),
         },
     },
-})
+});

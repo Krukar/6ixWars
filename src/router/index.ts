@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import TitleView from '@/views/TitleView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import TitleView from '@/views/TitleView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +9,6 @@ const router = createRouter({
         { path: '/scores', name: 'scores', component: () => import('@/views/ScoresView.vue') },
         { path: '/:pathMatch(.*)*', redirect: '/' },
     ],
-})
+});
 
-export default router
+export default router;

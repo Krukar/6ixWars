@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import IconMaximize from '@Components/SVGs/IconMaximize.vue'
-import IconMinimize from '@Components/SVGs/IconMinimize.vue'
+import IconMaximize from '@Components/SVGs/IconMaximize.vue';
+import IconMinimize from '@Components/SVGs/IconMinimize.vue';
 
-const can_fullscreen = document.fullscreenEnabled
-const is_fullscreen = ref(false)
+const can_fullscreen = document.fullscreenEnabled;
+const is_fullscreen = ref(false);
 
 const sync_fullscreen = () => {
-    is_fullscreen.value = document.fullscreenElement !== null
-}
+    is_fullscreen.value = document.fullscreenElement !== null;
+};
 
 const toggle_fullscreen = () => {
     if (document.fullscreenElement) {
-        void document.exitFullscreen()
+        void document.exitFullscreen();
     } else {
-        void document.documentElement.requestFullscreen()
+        void document.documentElement.requestFullscreen();
     }
-}
+};
 
 onMounted(() => {
-    sync_fullscreen()
-    document.addEventListener('fullscreenchange', sync_fullscreen)
-})
+    sync_fullscreen();
+    document.addEventListener('fullscreenchange', sync_fullscreen);
+});
 
-onBeforeUnmount(() => document.removeEventListener('fullscreenchange', sync_fullscreen))
+onBeforeUnmount(() => document.removeEventListener('fullscreenchange', sync_fullscreen));
 </script>
 
 <template>

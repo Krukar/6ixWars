@@ -29,11 +29,24 @@ store.start();
 
             <div>Debt {{ format_money(store.game.debt) }}</div>
 
-            <div>inventory</div>
+            <div>Inventory {{ store.inventory.count }} / {{ store.game.capacity }}</div>
         </section>
 
         <section class="flex justify-between">
-            <div>inventory bar</div>
+            <div class="w-full space-y-2">
+                <div>Inventory — {{ store.inventory.count }} of {{ store.game.capacity }} units used ({{ store.inventory.percent }}%)</div>
+
+                <div
+                    class="h-2 border border-current"
+                    role="meter"
+                    aria-label="Inventory"
+                    aria-valuemin="0"
+                    :aria-valuemax="store.game.capacity"
+                    :aria-valuenow="store.inventory.count"
+                >
+                    <div class="h-full bg-current transition-[width]" :style="{ width: `${store.inventory.percent}%` }"></div>
+                </div>
+            </div>
         </section>
 
         <section class="flex justify-between">
